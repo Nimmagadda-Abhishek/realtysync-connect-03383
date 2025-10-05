@@ -26,7 +26,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { useSavedProperties } from "@/contexts/SavedPropertiesContext";
-import { formatPrice, formatDate, parseAmenities } from "@/lib/utils/formatters";
+import { formatPrice, formatDate, parseAmenities, getYouTubeEmbedUrl } from "@/lib/utils/formatters";
 import { PropertyCard } from "@/components/PropertyCard";
 import { InquiryModal } from "@/components/InquiryModal";
 
@@ -307,20 +307,20 @@ const PropertyDetails = () => {
         {/* Video & Social */}
         {(property.youtubeVideoUrl || property.instagramProfile) && (
           <div className="space-y-4">
-            {property.youtubeVideoUrl && (
-              <div className="bg-card p-6 rounded-lg shadow-card">
-                <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-                  <Play className="h-6 w-6" /> Video Tour
-                </h2>
-                <div className="aspect-video">
-                  <iframe
-                    src={property.youtubeVideoUrl}
-                    className="w-full h-full rounded-lg"
-                    allowFullScreen
-                  />
-                </div>
-              </div>
-            )}
+{property.youtubeVideoUrl && (
+  <div className="bg-card p-6 rounded-lg shadow-card">
+    <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
+      <Play className="h-6 w-6" /> Video Tour
+    </h2>
+    <div className="aspect-video">
+      <iframe
+        src={getYouTubeEmbedUrl(property.youtubeVideoUrl)}
+        className="w-full h-full rounded-lg"
+        allowFullScreen
+      />
+    </div>
+  </div>
+)}
             {property.instagramProfile && (
               <Button variant="outline" className="w-full" onClick={() => window.open(property.instagramProfile, "_blank")}>
                 <Instagram className="h-5 w-5 mr-2" />

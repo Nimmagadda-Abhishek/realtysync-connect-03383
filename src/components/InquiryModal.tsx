@@ -17,9 +17,9 @@ interface InquiryModalProps {
 
 export const InquiryModal = ({ open, onClose, propertyId, propertyTitle }: InquiryModalProps) => {
   const [formData, setFormData] = useState({
-    fullName: "",
+    name: "",
     email: "",
-    phoneNumber: "",
+    phone: "",
     message: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -28,7 +28,7 @@ export const InquiryModal = ({ open, onClose, propertyId, propertyTitle }: Inqui
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
     
-    if (!formData.fullName.trim()) {
+    if (!formData.name.trim()) {
       newErrors.fullName = "Full name is required";
     }
     
@@ -38,9 +38,9 @@ export const InquiryModal = ({ open, onClose, propertyId, propertyTitle }: Inqui
       newErrors.email = "Please enter a valid email address";
     }
     
-    if (!formData.phoneNumber.trim()) {
+    if (!formData.phone.trim()) {
       newErrors.phoneNumber = "Phone number is required";
-    } else if (!/^\d{10}$/.test(formData.phoneNumber)) {
+    } else if (!/^\d{10}$/.test(formData.phone)) {
       newErrors.phoneNumber = "Phone number must be 10 digits";
     }
     
@@ -50,27 +50,36 @@ export const InquiryModal = ({ open, onClose, propertyId, propertyTitle }: Inqui
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (!validateForm()) return;
-    
+    console.log("handleSubmit called");
+
+    if (!validateForm()) {
+      console.log("Form validation failed");
+      return;
+    }
+
     setIsSubmitting(true);
-    
-    const inquiryData: InquiryFormData = {
-      fullName: formData.fullName.trim(),
+    console.log("Form validated, submitting");
+
+    const inquiryData = {
+      fullName: formData.name.trim(),
       email: formData.email.trim(),
-      phoneNumber: formData.phoneNumber.trim(),
+      phoneNumber: formData.phone.trim(),
       message: formData.message.trim() || undefined,
-      inquiryType: "PROPERTY_INQUIRY",
-      propertyId,
+      inquiryType: "VIEWING_REQUEST",
+      propertyId: propertyId,
       userId: null,
     };
-    
+    console.log("Inquiry data:", inquiryData);
+
     try {
+      console.log("Calling apiClient.post");
       await apiClient.post("/inquiries", inquiryData);
+      console.log("API call successful");
       toast.success("Inquiry sent successfully! The owner will contact you soon.");
-      setFormData({ fullName: "", email: "", phoneNumber: "", message: "" });
+      setFormData({ name: "", email: "", phone: "", message: "" });
       onClose();
     } catch (error) {
+      console.error("API call failed:", error);
       toast.error("Failed to send inquiry. Please try again.");
     } finally {
       setIsSubmitting(false);
@@ -91,8 +100,8 @@ export const InquiryModal = ({ open, onClose, propertyId, propertyTitle }: Inqui
             <Label htmlFor="fullName">Full Name *</Label>
             <Input
               id="fullName"
-              value={formData.fullName}
-              onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+              value={formData.name}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               placeholder="Enter your full name"
               className={errors.fullName ? "border-error" : ""}
             />
@@ -117,8 +126,8 @@ export const InquiryModal = ({ open, onClose, propertyId, propertyTitle }: Inqui
             <Input
               id="phoneNumber"
               type="tel"
-              value={formData.phoneNumber}
-              onChange={(e) => setFormData({ ...formData, phoneNumber: e.target.value.replace(/\D/g, "") })}
+              value={formData.phone}
+              onChange={(e) => setFormData({ ...formData, phone: e.target.value.replace(/\D/g, "") })}
               placeholder="10-digit mobile number"
               maxLength={10}
               className={errors.phoneNumber ? "border-error" : ""}

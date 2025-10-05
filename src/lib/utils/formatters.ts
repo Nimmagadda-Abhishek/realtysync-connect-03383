@@ -29,3 +29,23 @@ export const parseAmenities = (amenitiesString: string): string[] => {
   if (!amenitiesString) return [];
   return amenitiesString.split(",").map((a) => a.trim()).filter(Boolean);
 };
+
+export const getYouTubeEmbedUrl = (url: string): string | null => {
+  if (!url) return null;
+
+  // Extract video ID from various YouTube URL formats
+  const patterns = [
+    /(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?v=([^&\n?#]+)/,
+    /(?:https?:\/\/)?(?:www\.)?youtu\.be\/([^&\n?#]+)/,
+    /(?:https?:\/\/)?(?:www\.)?youtube\.com\/embed\/([^&\n?#]+)/,
+  ];
+
+  for (const pattern of patterns) {
+    const match = url.match(pattern);
+    if (match && match[1]) {
+      return `https://www.youtube.com/embed/${match[1]}`;
+    }
+  }
+
+  return null;
+};

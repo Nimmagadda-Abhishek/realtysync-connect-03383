@@ -77,6 +77,7 @@ const Register = () => {
         email: formData.email.trim(),
         phoneNumber: formData.phoneNumber.trim(),
         password: formData.password,
+        is_verified: false,
       });
 
       toast.success("Account created successfully!");
