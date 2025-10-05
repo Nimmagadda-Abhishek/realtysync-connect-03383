@@ -1,4 +1,4 @@
-const API_BASE_URL = "https://c3ea5635468f.ngrok-free.app/api";
+const API_BASE_URL = "https://6fce2fcf70f2.ngrok-free.app";
 
 export const apiClient = {
   get: async (endpoint: string) => {
