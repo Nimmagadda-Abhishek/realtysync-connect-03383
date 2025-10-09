@@ -35,6 +35,8 @@ const Search = () => {
     minPrice: searchParams.get("minPrice") || "",
     maxPrice: searchParams.get("maxPrice") || "",
     bedrooms: searchParams.get("bedrooms") || "",
+    pincode: searchParams.get("pincode") || "",
+    parkingAvailable: searchParams.get("parkingAvailable") || "any",
   });
   const [page, setPage] = useState(0);
   const [sort, setSort] = useState("newest");
@@ -51,7 +53,10 @@ const Search = () => {
     if (filters.minPrice) params.append("minPrice", filters.minPrice);
     if (filters.maxPrice) params.append("maxPrice", filters.maxPrice);
     if (filters.bedrooms) params.append("bedrooms", filters.bedrooms);
-    
+    if (filters.pincode) params.append("pincode", filters.pincode);
+    if (filters.parkingAvailable && filters.parkingAvailable !== "any") params.append("parkingAvailable", filters.parkingAvailable);
+
+
     return params.toString();
   };
 
@@ -100,6 +105,8 @@ const Search = () => {
       minPrice: "",
       maxPrice: "",
       bedrooms: "",
+      pincode: "",
+      parkingAvailable: "any",
     });
     setSearchQuery("");
     setPage(0);
@@ -114,6 +121,15 @@ const Search = () => {
           value={filters.city}
           onChange={(e) => setFilters({ ...filters, city: e.target.value })}
           placeholder="Enter city name (e.g., Hyderabad)"
+        />
+      </div>
+      <div>
+        <Label htmlFor="pincode">Zip Code</Label>
+        <Input
+          id="pincode"
+          value={filters.pincode}
+          onChange={(e) => setFilters({ ...filters, pincode: e.target.value })}
+          placeholder="Enter zip code (e.g., 500081)"
         />
       </div>
 
@@ -183,6 +199,20 @@ const Search = () => {
             <SelectItem value="3">3 BHK</SelectItem>
             <SelectItem value="4">4 BHK</SelectItem>
             <SelectItem value="5">5+ BHK</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
+      <div>
+        <Label htmlFor="parkingAvailable">Parking</Label>
+        <Select value={filters.parkingAvailable} onValueChange={(value) => setFilters({ ...filters, parkingAvailable: value })}>
+          <SelectTrigger>
+            <SelectValue placeholder="Select parking availability" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="any">Any</SelectItem>
+            <SelectItem value="true">With Parking</SelectItem>
+            <SelectItem value="false">Without Parking</SelectItem>
           </SelectContent>
         </Select>
       </div>

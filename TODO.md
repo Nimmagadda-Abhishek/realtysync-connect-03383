@@ -1,17 +1,7 @@
-# Inquiry Form Update Plan
-
-## Overview
-Update the inquiry form to send data in the required format with inquiryType defaulted to "VIEWING_REQUEST" and not shown in the frontend.
-
-## Tasks
-- [x] Update InquiryModal.tsx to include inquiryType, propertyId, and userId in the data sent to the server
-- [x] Set inquiryType to "VIEWING_REQUEST" as default without showing it in the UI
-- [x] Change field names: name -> fullName, phone -> phoneNumber
-- [x] Set userId to 1 (as per example)
-- [ ] Test the form submission to ensure correct data is sent
-
-## Files to Edit
-- src/components/InquiryModal.tsx
-
-## Follow-up
-- Verify the API call sends the correct JSON structure
+- [x] Create src/pages/Login.tsx with login form maintaining website styling
+- [x] Edit src/App.tsx to add /login route
+- [x] Create src/contexts/UserContext.tsx for user authentication state
+- [x] Create src/pages/Profile.tsx to display user details
+- [x] Edit src/App.tsx to add /profile route and UserProvider
+- [x] Edit src/pages/Login.tsx to set user data on login success
+- [x] Edit src/pages/Register.tsx to set user data on register success

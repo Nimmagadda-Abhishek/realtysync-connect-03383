@@ -82,7 +82,9 @@ const Home = () => {
               placeholder="Search by location, property type, or keyword..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
+              onClick={() => navigate("/search")}
               className="pl-12 h-14 text-lg bg-card text-foreground"
+              readOnly
             />
           </form>
         </div>

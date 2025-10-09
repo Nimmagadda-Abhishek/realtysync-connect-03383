@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { apiClient } from "@/lib/api";
+import { useUser } from "@/contexts/UserContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,6 +11,7 @@ import { Eye, EyeOff } from "lucide-react";
 
 const Register = () => {
   const navigate = useNavigate();
+  const { login } = useUser();
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -79,6 +81,19 @@ const Register = () => {
         password: formData.password,
         is_verified: false,
       });
+
+      // Assuming response includes user data
+      if (response && response.user) {
+        login(response.user);
+      } else {
+        // Fallback: create user object from form data
+        login({
+          id: "1", // Placeholder
+          fullName: formData.fullName.trim(),
+          email: formData.email.trim(),
+          phoneNumber: formData.phoneNumber.trim(),
+        });
+      }
 
       toast.success("Account created successfully!");
       navigate("/");
@@ -219,7 +234,10 @@ const Register = () => {
 
           <div className="text-center text-sm">
             <span className="text-muted-foreground">Already have an account? </span>
-            <button className="text-primary hover:underline font-medium">
+            <button
+              onClick={() => navigate("/login")}
+              className="text-primary hover:underline font-medium"
+            >
               Login
             </button>
           </div>
