@@ -1,4 +1,4 @@
-const API_BASE_URL = "https://b39ad0aff255.ngrok-free.app/api";
+const API_BASE_URL = "https://lucent-dolphin-a0f0ec.netlify.app/";
 
 export const apiClient = {
   get: async (endpoint: string) => {
