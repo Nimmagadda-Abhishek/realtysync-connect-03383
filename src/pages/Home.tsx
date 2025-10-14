@@ -75,7 +75,7 @@ const Home = () => {
     getUserState();
   }, []);
 
-  // Filter and sort properties within 50km of user's location
+  // Filter and sort properties within 50km of user's location, fallback to all if none found
   const filterAndSortProperties = useMemo(() => {
     const filterAndSort = (properties: Property[] | undefined, excludeSold: boolean = false) => {
       if (!properties) return [];
@@ -94,8 +94,8 @@ const Home = () => {
         return properties;
       }
 
-      // Filter properties within 50km and sort by distance
-      return properties
+      // First, filter properties within 50km
+      const nearbyProperties = properties
         .filter(property => {
           // Exclude sold properties if requested
           if (excludeSold && property.status === "SOLD") return false;
@@ -106,6 +106,20 @@ const Home = () => {
           const distB = calculateDistance(userLat, userLon, b.latitude!, b.longitude!);
           return distA - distB;
         });
+
+      // If no properties found within 50km, show all properties (excluding sold if requested)
+      if (nearbyProperties.length === 0) {
+        return properties
+          .filter(property => !excludeSold || property.status !== "SOLD")
+          .sort((a, b) => {
+            // Sort by listing status (premium first) if no location-based sorting
+            if (a.listingStatus === "PREMIUM" && b.listingStatus !== "PREMIUM") return -1;
+            if (a.listingStatus !== "PREMIUM" && b.listingStatus === "PREMIUM") return 1;
+            return 0;
+          });
+      }
+
+      return nearbyProperties;
     };
 
     return {
