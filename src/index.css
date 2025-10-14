@@ -8,47 +8,49 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 0 0% 98%;
-    --foreground: 220 13% 13%;
+    --background: 210 20% 98%;
+    --foreground: 222 47% 11%;
 
     --card: 0 0% 100%;
-    --card-foreground: 220 13% 13%;
+    --card-foreground: 222 47% 11%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 220 13% 13%;
+    --popover-foreground: 222 47% 11%;
 
-    /* Teal primary colors */
-    --primary: 173 80% 40%;
-    --primary-hover: 173 80% 35%;
+    /* Primary: #0F172A */
+    --primary: 222 47% 11%;
+    --primary-hover: 222 47% 15%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 217 91% 60%;
+    /* Secondary: #1E293B */
+    --secondary: 222 32% 19%;
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 220 13% 95%;
-    --muted-foreground: 220 9% 46%;
+    --muted: 210 20% 95%;
+    --muted-foreground: 215 20% 47%;
 
-    --accent: 173 80% 40%;
+    /* Accent: #D4AF37 */
+    --accent: 45 65% 54%;
     --accent-foreground: 0 0% 100%;
 
     /* Status colors */
     --success: 142 71% 45%;
     --warning: 38 92% 50%;
     --error: 0 72% 51%;
-    --info: 217 91% 60%;
+    --info: 222 32% 19%;
 
     /* Badge colors */
     --badge-sale: 142 71% 45%;
-    --badge-resale: 217 91% 60%;
+    --badge-resale: 222 32% 19%;
     --badge-rent: 271 91% 65%;
     --badge-verified: 142 71% 45%;
 
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 173 80% 40%;
+    --border: 210 20% 91%;
+    --input: 210 20% 91%;
+    --ring: 222 47% 11%;
 
     --radius: 0.75rem;
 
@@ -61,44 +63,44 @@ All colors MUST be HSL.
   }
 
   .dark {
-    --background: 220 15% 10%;
-    --foreground: 0 0% 98%;
+    --background: 222 47% 7%;
+    --foreground: 210 20% 98%;
 
-    --card: 220 13% 13%;
-    --card-foreground: 0 0% 98%;
+    --card: 222 32% 15%;
+    --card-foreground: 210 20% 98%;
 
-    --popover: 220 13% 13%;
-    --popover-foreground: 0 0% 98%;
+    --popover: 222 32% 15%;
+    --popover-foreground: 210 20% 98%;
 
-    --primary: 173 80% 45%;
-    --primary-hover: 173 80% 50%;
+    --primary: 222 47% 20%;
+    --primary-hover: 222 47% 25%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 217 91% 65%;
+    --secondary: 222 32% 25%;
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 220 13% 18%;
-    --muted-foreground: 220 9% 65%;
+    --muted: 222 32% 18%;
+    --muted-foreground: 215 20% 65%;
 
-    --accent: 173 80% 45%;
+    --accent: 45 65% 60%;
     --accent-foreground: 0 0% 100%;
 
     --success: 142 71% 50%;
     --warning: 38 92% 55%;
     --error: 0 72% 56%;
-    --info: 217 91% 65%;
+    --info: 222 32% 25%;
 
     --badge-sale: 142 71% 50%;
-    --badge-resale: 217 91% 65%;
+    --badge-resale: 222 32% 25%;
     --badge-rent: 271 91% 70%;
     --badge-verified: 142 71% 50%;
 
     --destructive: 0 72% 56%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 13% 20%;
-    --input: 220 13% 20%;
-    --ring: 173 80% 45%;
+    --border: 222 32% 20%;
+    --input: 222 32% 20%;
+    --ring: 222 47% 20%;
   }
 }
 

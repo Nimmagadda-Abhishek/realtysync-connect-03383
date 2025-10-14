@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, Link } from "react-router-dom";
 import { apiClient } from "@/lib/api";
 import { Property, PropertyType, ListingType } from "@/types/property";
 import { PropertyCard } from "@/components/PropertyCard";
@@ -29,6 +29,7 @@ const Search = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState(searchParams.get("q") || "");
   const [filters, setFilters] = useState({
+    state: searchParams.get("state") || "",
     city: searchParams.get("city") || "",
     propertyType: searchParams.get("propertyType") || "",
     listingType: searchParams.get("listingType") || "",
@@ -37,6 +38,7 @@ const Search = () => {
     bedrooms: searchParams.get("bedrooms") || "",
     pincode: searchParams.get("pincode") || "",
     parkingAvailable: searchParams.get("parkingAvailable") || "any",
+    parkingSpots: searchParams.get("parkingSpots") || "",
   });
   const [page, setPage] = useState(0);
   const [sort, setSort] = useState("newest");
@@ -46,7 +48,8 @@ const Search = () => {
     const params = new URLSearchParams();
     params.append("page", page.toString());
     params.append("size", "12");
-    
+
+    if (filters.state) params.append("state", filters.state);
     if (filters.city) params.append("city", filters.city);
     if (filters.propertyType) params.append("propertyType", filters.propertyType);
     if (filters.listingType) params.append("listingType", filters.listingType);
@@ -55,7 +58,7 @@ const Search = () => {
     if (filters.bedrooms) params.append("bedrooms", filters.bedrooms);
     if (filters.pincode) params.append("pincode", filters.pincode);
     if (filters.parkingAvailable && filters.parkingAvailable !== "any") params.append("parkingAvailable", filters.parkingAvailable);
-
+    if (filters.parkingSpots) params.append("parkingSpots", filters.parkingSpots);
 
     return params.toString();
   };
@@ -65,11 +68,11 @@ const Search = () => {
     queryFn: async () => {
       const queryString = buildQueryString();
       const response = await apiClient.get(`/properties?${queryString}`);
-      
+
       // Filter by search query on client side
       let filtered = response.content || response;
       if (!Array.isArray(filtered)) filtered = [filtered];
-      
+
       if (searchQuery) {
         const query = searchQuery.toLowerCase();
         filtered = filtered.filter((p: Property) =>
@@ -79,17 +82,22 @@ const Search = () => {
           p.fullAddress.toLowerCase().includes(query)
         );
       }
-      
+
       // Sort
       if (sort === "price-low") filtered.sort((a: Property, b: Property) => a.price - b.price);
       if (sort === "price-high") filtered.sort((a: Property, b: Property) => b.price - a.price);
       if (sort === "views") filtered.sort((a: Property, b: Property) => b.viewCount - a.viewCount);
-      
+
       return {
         content: filtered,
         totalElements: filtered.length,
       };
     },
+  });
+
+  const { data: soldOutProperties, isLoading: soldOutLoading } = useQuery<Property[]>({
+    queryKey: ["sold-out-properties"],
+    queryFn: () => apiClient.get("/agent/properties/sold"),
   });
 
   const handleApplyFilters = () => {
@@ -99,6 +107,7 @@ const Search = () => {
 
   const handleResetFilters = () => {
     setFilters({
+      state: "",
       city: "",
       propertyType: "",
       listingType: "",
@@ -107,13 +116,25 @@ const Search = () => {
       bedrooms: "",
       pincode: "",
       parkingAvailable: "any",
+      parkingSpots: "",
     });
     setSearchQuery("");
     setPage(0);
   };
 
+
+
   const FilterPanel = () => (
     <div className="space-y-6">
+      <div>
+        <Label htmlFor="state">State</Label>
+        <Input
+          id="state"
+          value={filters.state}
+          onChange={(e) => setFilters({ ...filters, state: e.target.value })}
+          placeholder="Enter state name (e.g., Telangana)"
+        />
+      </div>
       <div>
         <Label htmlFor="city">City</Label>
         <Input
@@ -217,6 +238,17 @@ const Search = () => {
         </Select>
       </div>
 
+      <div>
+        <Label htmlFor="parkingSpots">Parking Spots</Label>
+        <Input
+          id="parkingSpots"
+          type="number"
+          value={filters.parkingSpots}
+          onChange={(e) => setFilters({ ...filters, parkingSpots: e.target.value })}
+          placeholder="Enter number of parking spots"
+        />
+      </div>
+
       <div className="flex gap-2">
         <Button onClick={handleApplyFilters} className="flex-1">Apply Filters</Button>
         <Button onClick={handleResetFilters} variant="outline">Reset</Button>
@@ -236,8 +268,9 @@ const Search = () => {
               placeholder="Search by location, title, or keyword..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 h-12"
+              className="pl-10 pr-12 h-12"
             />
+
           </div>
 
           <div className="flex items-center justify-between gap-4">
@@ -275,7 +308,7 @@ const Search = () => {
         <div className="flex gap-8">
           {/* Desktop Filters */}
           <aside className="hidden md:block w-64 flex-shrink-0">
-            <div className="sticky top-4 bg-card p-6 rounded-lg shadow-card">
+            <div className="sticky top-4 bg-card p-6 rounded-lg shadow-card max-h-[calc(100vh-2rem)] overflow-y-auto">
               <h3 className="font-bold text-lg mb-4">Filters</h3>
               <FilterPanel />
             </div>
@@ -320,6 +353,25 @@ const Search = () => {
                 <Button onClick={handleResetFilters}>Reset All Filters</Button>
               </div>
             )}
+
+            {/* Sold Out Properties */}
+            <section className="mt-16">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold">Sold Out Properties</h2>
+                <Link to="/search?sold=true">
+                  <Button variant="ghost">View All →</Button>
+                </Link>
+              </div>
+              {soldOutLoading ? (
+                <PropertyGridSkeleton count={6} />
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {soldOutProperties?.slice(0, 6).map((property) => (
+                    <PropertyCard key={property.id} property={property} />
+                  ))}
+                </div>
+              )}
+            </section>
           </div>
         </div>
       </div>

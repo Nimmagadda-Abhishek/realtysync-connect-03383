@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Home, Heart } from "lucide-react";
 import { Button } from "./ui/button";
 import { useSavedProperties } from "@/contexts/SavedPropertiesContext";
@@ -12,14 +12,13 @@ export const Header = () => {
   const { savedPropertyIds } = useSavedProperties();
   const { isLoggedIn } = useUser();
   const navigate = useNavigate();
+  const location = useLocation();
   const [searchText, setSearchText] = useState("");
+  const isHomePage = location.pathname === "/";
 
-  const handleSearchClick = () => {
-    navigate("/search");
-  };
 
   return (
-    <header className="hidden md:block border-b border-border bg-card sticky top-0 z-40">
+    <header className={`hidden md:block sticky top-0 z-40 ${isHomePage ? 'bg-transparent' : 'bg-transparent backdrop-blur-xl'}`}>
       <div className="container mx-auto px-4 py-4 flex items-center justify-between max-w-7xl">
         <Link to="/" className="flex items-center gap-2">
           <div className="bg-primary text-primary-foreground p-2 rounded-lg">
@@ -29,14 +28,6 @@ export const Header = () => {
         </Link>
 
         <nav className="flex items-center gap-6">
-          <Input
-            type="text"
-            placeholder="Search by location, title, or keyword..."
-            value={searchText}
-            onClick={handleSearchClick}
-            readOnly
-            className="w-64"
-          />
           <Link to="/" className="text-foreground hover:text-primary transition-colors">
             Home
           </Link>
@@ -51,6 +42,9 @@ export const Header = () => {
                 {savedPropertyIds.length}
               </Badge>
             )}
+          </Link>
+          <Link to="/add-property" className="text-foreground hover:text-primary transition-colors">
+            Add Property
           </Link>
           {isLoggedIn ? (
             <Link to="/profile">

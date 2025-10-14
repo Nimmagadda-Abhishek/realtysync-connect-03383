@@ -101,12 +101,21 @@ export const PropertyCard = ({ property }: PropertyCardProps) => {
     >
       {/* Image Section */}
       <div className="relative aspect-video overflow-hidden">
-        <img
-          src={primaryImage?.imageUrl || "/placeholder.svg"}
-          alt={primaryImage?.altText || property.propertyTitle}
-          className="w-full h-full object-cover"
-          loading="lazy"
-        />
+        {property.status === "SOLD" ? (
+          <div className="w-full h-full bg-muted flex items-center justify-center">
+            <div className="text-center">
+              <div className="text-2xl font-bold text-muted-foreground mb-2">SOLD OUT</div>
+              <div className="text-sm text-muted-foreground">This property has been sold</div>
+            </div>
+          </div>
+        ) : (
+          <img
+            src={primaryImage?.imageUrl || "/placeholder.svg"}
+            alt={primaryImage?.altText || property.propertyTitle}
+            className="w-full h-full object-cover"
+            loading="lazy"
+          />
+        )}
         {/* Badges Overlay */}
         <div className="absolute top-3 left-3">
           <Badge className="bg-foreground/80 text-background backdrop-blur-sm">

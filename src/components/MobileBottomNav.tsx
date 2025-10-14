@@ -1,4 +1,4 @@
-import { Home, Search, Heart, User, Menu } from "lucide-react";
+import { Home, Search, Heart, User, Menu, Plus } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useSavedProperties } from "@/contexts/SavedPropertiesContext";
 import { useUser } from "@/contexts/UserContext";
@@ -15,6 +15,7 @@ export const MobileBottomNav = () => {
     { path: "/", icon: Home, label: "Home" },
     { path: "/search", icon: Search, label: "Search" },
     { path: "/saved", icon: Heart, label: "Saved", badge: savedPropertyIds.length },
+    { path: "/add-property", icon: Plus, label: "Add Property" },
     { path: isLoggedIn ? "/profile" : "/login", icon: User, label: "Account" },
   ];
 

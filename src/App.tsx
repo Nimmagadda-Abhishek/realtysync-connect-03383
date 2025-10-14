@@ -16,6 +16,7 @@ import SavedProperties from "./pages/SavedProperties";
 import CategoryProperties from "./pages/CategoryProperties";
 import ListingTypeProperties from "./pages/ListingTypeProperties";
 import Profile from "./pages/Profile";
+import AddProperty from "./pages/AddProperty";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -38,6 +39,7 @@ const App = () => (
                 <Route path="/login" element={<Login />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/saved" element={<SavedProperties />} />
+                <Route path="/add-property" element={<AddProperty />} />
                 <Route path="/properties/sale" element={<ListingTypeProperties />} />
                 <Route path="/properties/resale" element={<ListingTypeProperties />} />
                 <Route path="/properties/rent" element={<ListingTypeProperties />} />

@@ -53,6 +53,26 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         deleteCookie("user");
       }
     }
+
+    // Collect user's location once on app load if not already stored
+    const storedLocation = localStorage.getItem("userLocation");
+    if (!storedLocation && navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          localStorage.setItem("userLocation", JSON.stringify({ latitude, longitude }));
+          console.log("User location stored:", { latitude, longitude });
+        },
+        (error) => {
+          console.error("Error getting user location:", error.message);
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 300000, // 5 minutes
+        }
+      );
+    }
   }, []);
 
   const login = (userData: User) => {
