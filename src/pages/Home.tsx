@@ -238,21 +238,23 @@ const Home = () => {
     <div className="min-h-screen">
       {/* Hero Section */}
       <section className="bg-cover bg-center bg-no-repeat text-primary-foreground py-32 px-4 relative min-h-[80vh]" style={{ backgroundImage: "url('/01.jpg')" }}>
-        <div className="absolute inset-0 bg-black bg-opacity-50"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-black/50 to-black/70"></div>
         <div className="relative z-10">
-          <div className="container mx-auto max-w-4xl text-center space-y-6">
-            <h1 className="text-4xl md:text-5xl font-bold">Find Your Dream Property</h1>
-            <p className="text-xl opacity-90">Browse thousands of properties for sale and rent</p>
-            <div className="flex gap-2 max-w-xl mx-auto">
-              <form onSubmit={handleSearch} className="flex-1 relative">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+          <div className="container mx-auto max-w-4xl text-center space-y-8">
+            <h1 className="text-5xl md:text-6xl font-bold animate-fade-in bg-gradient-to-r from-white via-white to-gray-300 bg-clip-text text-transparent">
+              Find Your Dream Property
+            </h1>
+            <p className="text-xl md:text-2xl opacity-90 animate-slide-in-left">Browse thousands of properties for sale and rent</p>
+            <div className="flex gap-3 max-w-2xl mx-auto animate-scale-in">
+              <form onSubmit={handleSearch} className="flex-1 relative group">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
                 <Input
                   type="text"
                   placeholder="Search by location, property type, or keyword..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onClick={() => navigate("/search")}
-                  className="pl-12 h-12 text-base bg-card text-foreground"
+                  className="pl-12 h-14 text-base bg-white/95 backdrop-blur-md text-foreground border-2 border-transparent hover:border-primary focus:border-primary transition-all shadow-xl rounded-xl"
                   readOnly
                 />
               </form>
@@ -261,7 +263,7 @@ const Home = () => {
                 size="lg"
                 onClick={handleGetCurrentLocation}
                 disabled={isGettingLocation}
-                className="h-12 px-4 bg-white text-black hover:bg-gray-100"
+                className="h-14 px-6 bg-gradient-to-r from-primary to-accent hover:from-accent hover:to-primary text-white shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 rounded-xl"
                 title="Use current location"
               >
                 <RefreshCw className={`h-5 w-5 ${isGettingLocation ? 'animate-spin' : ''}`} />
@@ -273,21 +275,24 @@ const Home = () => {
 
       <div className="container mx-auto px-4 py-12 space-y-16 max-w-7xl">
         {/* Category Filters */}
-        <section>
-          <h2 className="text-2xl font-bold mb-6">Browse by Category</h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-            {categoryButtons.map((category) => {
+        <section className="animate-fade-in">
+          <h2 className="text-3xl font-bold mb-8 text-center bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Browse by Category</h2>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+            {categoryButtons.map((category, index) => {
               const Icon = category.icon;
               return (
-                <Link key={category.label} to={category.path}>
+                <Link key={category.label} to={category.path} style={{ animationDelay: `${index * 0.1}s` }} className="animate-scale-in">
                   <Button
                     variant="outline"
-                    className="w-full h-auto py-6 flex flex-col gap-3 hover:bg-primary hover:text-primary-foreground transition-all"
+                    className="w-full h-auto py-8 flex flex-col gap-4 hover:bg-gradient-to-br hover:from-primary hover:to-accent hover:text-white border-2 hover:border-transparent transition-all duration-300 transform hover:scale-105 hover:shadow-xl rounded-xl group"
                   >
-                    <div className={`p-3 rounded-full ${category.color} text-white`}>
-                      <Icon className="h-8 w-8" />
+                    <div className="relative">
+                      <div className={`absolute inset-0 ${category.color} rounded-full blur-md opacity-50 group-hover:opacity-75 transition-opacity`}></div>
+                      <div className={`relative p-4 rounded-full ${category.color} text-white group-hover:scale-110 transition-transform shadow-lg`}>
+                        <Icon className="h-8 w-8" />
+                      </div>
                     </div>
-                    <span className="text-sm font-medium">{category.label}</span>
+                    <span className="text-sm font-semibold">{category.label}</span>
                   </Button>
                 </Link>
               );
@@ -299,11 +304,13 @@ const Home = () => {
 
 
         {/* Featured Properties */}
-        <section>
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold">Featured Properties</h2>
+        <section className="animate-fade-in">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Featured Properties</h2>
             <Link to="/search?featured=true">
-              <Button variant="ghost">View All →</Button>
+              <Button variant="ghost" className="hover:bg-gradient-to-r hover:from-primary hover:to-accent hover:text-white transition-all duration-300 rounded-lg">
+                View All →
+              </Button>
             </Link>
           </div>
           {featuredLoading ? (
@@ -330,11 +337,13 @@ const Home = () => {
         </section>
 
         {/* Premium Properties */}
-        <section>
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold">Premium Properties</h2>
+        <section className="animate-fade-in">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Premium Properties</h2>
             <Link to="/search?premium=true">
-              <Button variant="ghost">View All →</Button>
+              <Button variant="ghost" className="hover:bg-gradient-to-r hover:from-primary hover:to-accent hover:text-white transition-all duration-300 rounded-lg">
+                View All →
+              </Button>
             </Link>
           </div>
           {premiumLoading ? (
@@ -349,11 +358,13 @@ const Home = () => {
         </section>
 
         {/* Recent Properties */}
-        <section>
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold">Recently Added</h2>
+        <section className="animate-fade-in">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Recently Added</h2>
             <Link to="/search">
-              <Button variant="ghost">View All →</Button>
+              <Button variant="ghost" className="hover:bg-gradient-to-r hover:from-primary hover:to-accent hover:text-white transition-all duration-300 rounded-lg">
+                View All →
+              </Button>
             </Link>
           </div>
           {recentLoading ? (
@@ -368,11 +379,13 @@ const Home = () => {
         </section>
 
         {/* Sold Out Properties */}
-        <section className="mb-20">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold">Sold Out Properties</h2>
+        <section className="mb-20 animate-fade-in">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Sold Out Properties</h2>
             <Link to="/search?sold=true">
-              <Button variant="ghost">View All →</Button>
+              <Button variant="ghost" className="hover:bg-gradient-to-r hover:from-primary hover:to-accent hover:text-white transition-all duration-300 rounded-lg">
+                View All →
+              </Button>
             </Link>
           </div>
           {soldOutLoading ? (

@@ -93,17 +93,17 @@ export const PropertyCard = ({ property }: PropertyCardProps) => {
   return (
     <div
       onClick={handleCardClick}
-      className={`bg-card rounded-lg overflow-hidden transition-all duration-200 cursor-pointer hover:scale-[1.02] animate-fade-in ${
+      className={`group bg-card rounded-xl overflow-hidden transition-all duration-300 cursor-pointer hover:scale-[1.03] animate-fade-in ${
         isPremium
-          ? "border-2 border-primary shadow-[0_0_20px_rgba(20,184,166,0.3)] hover:shadow-[0_0_30px_rgba(20,184,166,0.5)] bg-gradient-to-br from-card to-primary/5"
-          : "shadow-card hover:shadow-card-hover"
+          ? "border-2 border-primary shadow-[0_0_20px_rgba(20,184,166,0.3)] hover:shadow-[0_0_35px_rgba(20,184,166,0.6)] bg-gradient-to-br from-card to-primary/5 animate-glow"
+          : "shadow-lg hover:shadow-2xl border border-border/50"
       }`}
     >
       {/* Image Section */}
       <div className="relative aspect-video overflow-hidden">
         {property.status === "SOLD" ? (
-          <div className="w-full h-full bg-muted flex items-center justify-center">
-            <div className="text-center">
+          <div className="w-full h-full bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center">
+            <div className="text-center animate-fade-in">
               <div className="text-2xl font-bold text-muted-foreground mb-2">SOLD OUT</div>
               <div className="text-sm text-muted-foreground">This property has been sold</div>
             </div>
@@ -112,27 +112,27 @@ export const PropertyCard = ({ property }: PropertyCardProps) => {
           <img
             src={primaryImage?.imageUrl || "/placeholder.svg"}
             alt={primaryImage?.altText || property.propertyTitle}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
             loading="lazy"
           />
         )}
         {/* Badges Overlay */}
-        <div className="absolute top-3 left-3">
-          <Badge className="bg-foreground/80 text-background backdrop-blur-sm">
+        <div className="absolute top-3 left-3 animate-slide-in-left">
+          <Badge className="bg-foreground/90 text-background backdrop-blur-md hover:scale-105 transition-transform">
             {property.propertyType.replace(/_/g, " ")}
           </Badge>
         </div>
-        <div className="absolute top-3 right-3 flex flex-col gap-2">
+        <div className="absolute top-3 right-3 flex flex-col gap-2 animate-slide-in-right">
           {isPremium && (
-            <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold shadow-lg">
+            <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold shadow-lg hover:scale-105 transition-transform animate-float">
               <Star className="h-3 w-3 mr-1 fill-white" />
               Premium
             </Badge>
           )}
           {property.isVerified && (
-            <Badge className="bg-badge-verified text-white">✓ Verified</Badge>
+            <Badge className="bg-badge-verified text-white hover:scale-105 transition-transform">✓ Verified</Badge>
           )}
-          <Badge className={getListingTypeBadge(property.listingType)}>
+          <Badge className={`${getListingTypeBadge(property.listingType)} hover:scale-105 transition-transform`}>
             {property.listingType}
           </Badge>
         </div>
@@ -183,24 +183,26 @@ export const PropertyCard = ({ property }: PropertyCardProps) => {
         <div className="flex items-center gap-2 pt-2">
           <button
             onClick={handleSave}
-            className={`flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-md transition-colors ${
+            className={`flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-lg transition-all duration-300 transform hover:scale-105 ${
               isSaved
-                ? "bg-primary text-primary-foreground"
+                ? "bg-gradient-to-r from-primary to-accent text-white shadow-lg"
                 : "bg-muted hover:bg-muted/80 text-foreground"
             }`}
           >
-            <Heart className={`h-4 w-4 ${isSaved ? "fill-current" : ""}`} />
-            <span className="text-sm">{isSaved ? "Saved" : "Save"}</span>
+            <Heart className={`h-4 w-4 transition-transform ${isSaved ? "fill-current scale-110" : ""}`} />
+            <span className="text-sm font-medium">{isSaved ? "Saved" : "Save"}</span>
           </button>
           <button
             onClick={handleShare}
-            className="flex items-center justify-center p-2 rounded-md bg-muted hover:bg-muted/80 transition-colors"
+            className="flex items-center justify-center p-2 rounded-lg bg-muted hover:bg-primary hover:text-white transition-all duration-300 transform hover:scale-110"
+            title="Share Property"
           >
             <Share2 className="h-4 w-4" />
           </button>
           <button
             onClick={handleWhatsApp}
-            className="flex items-center justify-center p-2 rounded-md bg-success hover:bg-success/90 text-white transition-colors"
+            className="flex items-center justify-center p-2 rounded-lg bg-gradient-to-r from-success to-green-600 hover:from-green-600 hover:to-success text-white transition-all duration-300 transform hover:scale-110 shadow-md"
+            title="Contact via WhatsApp"
           >
             <MessageCircle className="h-4 w-4" />
           </button>
