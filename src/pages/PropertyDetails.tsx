@@ -23,12 +23,54 @@ import {
   CheckCircle2,
   Instagram,
   Play,
+  Waves,
+  Dumbbell,
+  Shield,
+  TreePine,
+  Zap,
+  ArrowUpDown,
+  Wifi,
+  Wind,
+  ChefHat,
+  Gamepad2,
+  Home,
+  Building,
+  Users,
+  Camera,
+  Coffee,
+  Bike,
+  Fuel,
 } from "lucide-react";
 import { useState } from "react";
 import { useSavedProperties } from "@/contexts/SavedPropertiesContext";
 import { formatPrice, formatDate, parseAmenities, getYouTubeEmbedUrl } from "@/lib/utils/formatters";
 import { PropertyCard } from "@/components/PropertyCard";
 import { InquiryModal } from "@/components/InquiryModal";
+
+const getAmenityIcon = (amenity: string) => {
+  const lowerAmenity = amenity.toLowerCase();
+
+  if (lowerAmenity.includes('swimming') || lowerAmenity.includes('pool')) return Waves;
+  if (lowerAmenity.includes('gym') || lowerAmenity.includes('fitness')) return Dumbbell;
+  if (lowerAmenity.includes('security') || lowerAmenity.includes('guard')) return Shield;
+  if (lowerAmenity.includes('garden') || lowerAmenity.includes('park')) return TreePine;
+  if (lowerAmenity.includes('power') || lowerAmenity.includes('backup') || lowerAmenity.includes('electricity')) return Zap;
+  if (lowerAmenity.includes('lift') || lowerAmenity.includes('elevator')) return ArrowUpDown;
+  if (lowerAmenity.includes('wifi') || lowerAmenity.includes('internet')) return Wifi;
+  if (lowerAmenity.includes('ac') || lowerAmenity.includes('air conditioning')) return Wind;
+  if (lowerAmenity.includes('kitchen') || lowerAmenity.includes('cooking')) return ChefHat;
+  if (lowerAmenity.includes('playground') || lowerAmenity.includes('game')) return Gamepad2;
+  if (lowerAmenity.includes('parking') || lowerAmenity.includes('car')) return Car;
+  if (lowerAmenity.includes('club') || lowerAmenity.includes('community')) return Users;
+  if (lowerAmenity.includes('camera') || lowerAmenity.includes('cctv')) return Camera;
+  if (lowerAmenity.includes('cafe') || lowerAmenity.includes('coffee')) return Coffee;
+  if (lowerAmenity.includes('bike') || lowerAmenity.includes('cycle')) return Bike;
+  if (lowerAmenity.includes('fuel') || lowerAmenity.includes('charging')) return Fuel;
+  if (lowerAmenity.includes('home') || lowerAmenity.includes('house')) return Home;
+  if (lowerAmenity.includes('building') || lowerAmenity.includes('apartment')) return Building;
+
+  return CheckCircle2; // Default fallback
+};
 
 const PropertyDetails = () => {
   const { id } = useParams();
@@ -293,13 +335,16 @@ const PropertyDetails = () => {
         {amenitiesList.length > 0 && (
           <div className="bg-card p-6 rounded-lg shadow-card">
             <h2 className="text-2xl font-bold mb-4">Amenities & Features</h2>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-              {amenitiesList.map((amenity, idx) => (
-                <div key={idx} className="flex items-center gap-2 bg-muted px-3 py-2 rounded-md">
-                  <CheckCircle2 className="h-4 w-4 text-primary flex-shrink-0" />
-                  <span className="text-sm">{amenity}</span>
-                </div>
-              ))}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {amenitiesList.map((amenity, idx) => {
+                const IconComponent = getAmenityIcon(amenity);
+                return (
+                  <div key={idx} className="flex items-center gap-3 bg-muted px-4 py-3 rounded-lg">
+                    <IconComponent className="h-6 w-6 text-primary flex-shrink-0" />
+                    <span className="text-base font-medium">{amenity}</span>
+                  </div>
+                );
+              })}
             </div>
           </div>
         )}

@@ -17,6 +17,7 @@ import CategoryProperties from "./pages/CategoryProperties";
 import ListingTypeProperties from "./pages/ListingTypeProperties";
 import Profile from "./pages/Profile";
 import AddProperty from "./pages/AddProperty";
+import AgentRegister from "./pages/AgentRegister";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -44,6 +45,7 @@ const App = () => (
                 <Route path="/properties/resale" element={<ListingTypeProperties />} />
                 <Route path="/properties/rent" element={<ListingTypeProperties />} />
                 <Route path="/properties/:category" element={<CategoryProperties />} />
+                <Route path="/agent-register" element={<AgentRegister />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>

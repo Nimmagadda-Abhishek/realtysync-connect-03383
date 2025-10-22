@@ -1,7 +1,9 @@
-- [x] Create src/pages/Login.tsx with login form maintaining website styling
-- [x] Edit src/App.tsx to add /login route
-- [x] Create src/contexts/UserContext.tsx for user authentication state
-- [x] Create src/pages/Profile.tsx to display user details
-- [x] Edit src/App.tsx to add /profile route and UserProvider
-- [x] Edit src/pages/Login.tsx to set user data on login success
-- [x] Edit src/pages/Register.tsx to set user data on register success
+# TODO: Add Construction Status Filter and PostedBy Sort
+
+## Tasks
+- [ ] Add constructionStatus to filters state in Search.tsx
+- [ ] Update buildQueryString to include constructionStatus parameter
+- [ ] Add Construction Status filter UI in FilterPanel component
+- [ ] Add "Posted By" sort option to the sort select
+- [ ] Implement sorting logic for "posted-by" in queryFn (sort by createdAt descending)
+- [ ] Test the new filters and sorting functionality

@@ -117,11 +117,6 @@ export const PropertyCard = ({ property }: PropertyCardProps) => {
           />
         )}
         {/* Badges Overlay */}
-        <div className="absolute top-3 left-3 animate-slide-in-left">
-          <Badge className="bg-foreground/90 text-background backdrop-blur-md hover:scale-105 transition-transform">
-            {property.propertyType.replace(/_/g, " ")}
-          </Badge>
-        </div>
         <div className="absolute top-3 right-3 flex flex-col gap-2 animate-slide-in-right">
           {isPremium && (
             <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold shadow-lg hover:scale-105 transition-transform animate-float">
@@ -129,12 +124,6 @@ export const PropertyCard = ({ property }: PropertyCardProps) => {
               Premium
             </Badge>
           )}
-          {property.isVerified && (
-            <Badge className="bg-badge-verified text-white hover:scale-105 transition-transform">✓ Verified</Badge>
-          )}
-          <Badge className={`${getListingTypeBadge(property.listingType)} hover:scale-105 transition-transform`}>
-            {property.listingType}
-          </Badge>
         </div>
       </div>
 

@@ -39,6 +39,8 @@ const Search = () => {
     pincode: searchParams.get("pincode") || "",
     parkingAvailable: searchParams.get("parkingAvailable") || "any",
     parkingSpots: searchParams.get("parkingSpots") || "",
+    constructionStatus: searchParams.get("constructionStatus") || "",
+    postedBy: searchParams.get("postedBy") || "",
   });
   const [page, setPage] = useState(0);
   const [sort, setSort] = useState("newest");
@@ -59,6 +61,7 @@ const Search = () => {
     if (filters.pincode) params.append("pincode", filters.pincode);
     if (filters.parkingAvailable && filters.parkingAvailable !== "any") params.append("parkingAvailable", filters.parkingAvailable);
     if (filters.parkingSpots) params.append("parkingSpots", filters.parkingSpots);
+    if (filters.constructionStatus) params.append("constructionStatus", filters.constructionStatus);
 
     return params.toString();
   };
@@ -79,7 +82,16 @@ const Search = () => {
           p.propertyTitle.toLowerCase().includes(query) ||
           p.locality.toLowerCase().includes(query) ||
           p.city.toLowerCase().includes(query) ||
-          p.fullAddress.toLowerCase().includes(query)
+          p.fullAddress.toLowerCase().includes(query) ||
+          p.contactName.toLowerCase().includes(query)
+        );
+      }
+
+      // Filter by postedBy
+      if (filters.postedBy) {
+        const postedByQuery = filters.postedBy.toLowerCase();
+        filtered = filtered.filter((p: Property) =>
+          p.contactName.toLowerCase().includes(postedByQuery)
         );
       }
 
@@ -87,6 +99,7 @@ const Search = () => {
       if (sort === "price-low") filtered.sort((a: Property, b: Property) => a.price - b.price);
       if (sort === "price-high") filtered.sort((a: Property, b: Property) => b.price - a.price);
       if (sort === "views") filtered.sort((a: Property, b: Property) => b.viewCount - a.viewCount);
+      if (sort === "posted-by") filtered.sort((a: Property, b: Property) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
       return {
         content: filtered,
@@ -117,6 +130,8 @@ const Search = () => {
       pincode: "",
       parkingAvailable: "any",
       parkingSpots: "",
+      constructionStatus: "",
+      postedBy: "",
     });
     setSearchQuery("");
     setPage(0);
@@ -249,6 +264,32 @@ const Search = () => {
         />
       </div>
 
+      <div>
+        <Label htmlFor="postedBy">Posted By</Label>
+        <Input
+          id="postedBy"
+          value={filters.postedBy}
+          onChange={(e) => setFilters({ ...filters, postedBy: e.target.value })}
+          placeholder="Enter contact name"
+        />
+      </div>
+
+      <div>
+        <Label htmlFor="constructionStatus">Construction Status</Label>
+        <Select value={filters.constructionStatus} onValueChange={(value) => setFilters({ ...filters, constructionStatus: value })}>
+          <SelectTrigger>
+            <SelectValue placeholder="Select construction status" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="any">Any</SelectItem>
+            <SelectItem value="AVAILABLE">Available</SelectItem>
+            <SelectItem value="SOLD">Sold</SelectItem>
+            <SelectItem value="UNDER_OFFER">Under Offer</SelectItem>
+            <SelectItem value="RENTED">Rented</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
       <div className="flex gap-2">
         <Button onClick={handleApplyFilters} className="flex-1">Apply Filters</Button>
         <Button onClick={handleResetFilters} variant="outline">Reset</Button>
@@ -297,6 +338,7 @@ const Search = () => {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="newest">Newest First</SelectItem>
+                <SelectItem value="posted-by">Posted By</SelectItem>
                 <SelectItem value="price-low">Price: Low to High</SelectItem>
                 <SelectItem value="price-high">Price: High to Low</SelectItem>
                 <SelectItem value="views">Most Viewed</SelectItem>

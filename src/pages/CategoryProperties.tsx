@@ -37,7 +37,7 @@ const CategoryProperties = () => {
           <span className="text-foreground">{categoryInfo.title}</span>
         </div>
 
-        <h1 className="text-3xl font-bold mb-8">{categoryInfo.title}</h1>
+        
 
         {isLoading ? (
           <PropertyGridSkeleton count={9} />
